@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>梁碧轩 — 在AI时代认真做产品的人</title>
+<meta name="description" content="梁碧轩的个人网站。从人力资源到AI产品，在AI时代认真做产品的人。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Caveat:wght@400;600&family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+body {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  color: #1a1a1a;
+  background: #fefcf6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #F4D758; color: #1a1a1a; }
+
+/* ============ CUSTOM CURSOR GLOW ============ */
+.cursor-glow {
+  position: fixed;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244,215,88,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+body:hover .cursor-glow { opacity: 1; }
+
+/* ============ SECTION COMMON ============ */
+section { position: relative; }
+.section-label {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 3rem;
+}
+
+/* ============ HERO — TERMINAL STYLE ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #0d1117;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.terminal-window {
+  width: 100%;
+  max-width: 720px;
+  background: #161b22;
+  border-radius: 12px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  background: #1c2129;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.terminal-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.terminal-dot--red { background: #ff5f57; }
+.terminal-dot--yellow { background: #febc2e; }
+.terminal-dot--green { background: #28c840; }
+.terminal-header-title {
+  flex: 1;
+  text-align: center;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  margin-right: 52px;
+}
+
+.terminal-body {
+  padding: 1.8rem 2rem 2.5rem;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  line-height: 1.8;
+  min-height: 360px;
+}
+.terminal-line {
+  opacity: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.terminal-line.visible {
+  opacity: 1;
+}
+.terminal-line .cmd {
+  color: #2B7FD8;
+}
+.terminal-line .cmd-text {
+  color: #8b949e;
+}
+.terminal-line .output {
+  color: #F4D758;
+}
+.terminal-line .highlight {
+  color: #28c840;
+}
+.terminal-line .link {
+  color: #F7A946;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: default;
+}
+.terminal-line .emoji {
+  color: #fff;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  background: #F4D758;
+  vertical-align: text-bottom;
+  animation: cursorBlink 1s step-end infinite;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 0.8; transform: translateY(0); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 10s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-scroll span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.hero-scroll-line {
+  width: 1px; height: 40px;
+  background: #F4D758;
+  opacity: 0.4;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.3; }
+  50% { transform: scaleY(1.5); opacity: 0.6; }
+}
+
+/* ============ JOURNEY — CHAT INTERVIEW ============ */
+.journey-section { padding: 80px 2rem; background: #fefcf6; }
+.journey-inner { max-width: 1200px; margin: 0 auto; }
+.journey-headline {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  text-align: center; margin-bottom: 2.5rem; color: #1a1a1a;
+}
+.journey-headline em { font-style: normal; color: #2B7FD8; }
+
+.journey-two-screens {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 768px) {
+  .journey-two-screens { grid-template-columns: 1fr; }
+}
+
+.journey-window {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  background: #fff;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+.journey-window-bar {
+  background: #f0f0f0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+.journey-window-dots { display: flex; gap: 6px; }
+.journey-window-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.journey-window-title { font-size: 12px; color: #888; font-weight: 500; }
+
+.journey-chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fafafa;
+}
+
+.jchat { max-width: 85%; }
+.jchat-name { font-size: 10px; color: #999; margin-bottom: 2px; font-weight: 600; }
+.jchat-tag { font-size: 10px; color: #2B7FD8; font-weight: 700; margin-bottom: 2px; }
+.jchat-msg {
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.jchat--cola { align-self: flex-start; }
+.jchat--cola .jchat-msg { background: #2B7FD8; color: #fff; border-bottom-left-radius: 4px; }
+.jchat--me { align-self: flex-end; }
+.jchat--me .jchat-msg { background: #F4D758; color: #1a1a1a; border-bottom-right-radius: 4px; }
+.jchat--me .jchat-name { text-align: right; }
+
+/* ============ OPINIONS — FULLSCREEN SCROLL ============ */
+.opinions-section {
+  position: relative;
+}
+.opinion-slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.opinion-slide:nth-child(1) { background: #F4D758; }
+.opinion-slide:nth-child(2) { background: #2B7FD8; color: #fff; }
+.opinion-slide:nth-child(3) { background: #fefcf6; }
+.opinion-slide:nth-child(4) { background: #F7A946; }
+.opinion-slide:nth-child(5) { background: #1a2332; color: #fff; }
+
+.opinion-number {
+  font-family: 'Inter', 'Noto Sans SC', serif;
+  font-weight: 900;
+  font-size: clamp(6rem, 20vw, 16rem);
+  opacity: 0.06;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  pointer-events: none;
+}
+.opinion-slide:nth-child(2) .opinion-number,
+.opinion-slide:nth-child(5) .opinion-number { opacity: 0.08; color: #fff; }
+
+.opinion-text { 
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5.5vw, 3.8rem);
+  max-width: 800px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.opinion-text.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.opinion-deco {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  opacity: 0.5;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ PROJECTS — MAGAZINE CARDS ============ */
+.projects {
+  padding: 10rem 2rem;
+  background: #fefcf6;
+}
+.projects-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.projects .section-label { text-align: center; }
+.projects-headline {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 5rem;
+  letter-spacing: -0.02em;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.project-card {
+  border-radius: 24px;
+  padding: 3rem;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.project-card:hover {
+  box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+}
+.project-card--1 {
+  background: linear-gradient(135deg, #F4D758 0%, #F7A946 100%);
+}
+.project-card--1::before {
+  background: linear-gradient(135deg, #f0cc20 0%, #e89520 100%);
+}
+.project-card--2 {
+  background: linear-gradient(135deg, #2B7FD8 0%, #1a5fa0 100%);
+  color: #fff;
+}
+.project-card--2::before {
+  background: linear-gradient(135deg, #2070c8 0%, #144a80 100%);
+}
+.project-card:hover::before { opacity: 1; }
+
+.project-card-bg-text {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 8rem);
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  opacity: 0.1;
+  line-height: 1;
+  pointer-events: none;
+}
+.project-card--2 .project-card-bg-text { opacity: 0.12; }
+
+.project-card-content {
+  position: relative;
+  z-index: 1;
+}
+.project-card-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.project-card-title {
+  font-weight: 800;
+  font-size: 1.6rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+.project-card-desc {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+.project-card-tag {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.project-card--1 .project-card-tag {
+  background: rgba(26,26,26,0.1);
+  color: #1a1a1a;
+}
+.project-card--2 .project-card-tag {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* ============ WORKS — HORIZONTAL SCROLL ============ */
+.works {
+  padding: 8rem 0;
+  background: #f5f2ea;
+  overflow: hidden;
+}
+.works-top {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  margin-bottom: 4rem;
+}
+.works .section-label { padding: 0 2rem; max-width: 1100px; margin: 0 auto 1rem; }
+.works-headline {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.02em;
+}
+
+.works-track {
+  display: flex;
+  gap: 2rem;
+  padding: 0 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.works-track::-webkit-scrollbar { display: none; }
+
+.work-card {
+  flex: 0 0 340px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  scroll-snap-align: start;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.work-card:hover { transform: translateY(-8px); }
+
+.work-card-number {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(135deg, #F4D758, #F7A946);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.work-card-unit {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 1.2rem;
+}
+.work-card-title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+.work-card-platform {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 400;
+}
+
+/* ============ CONTACT ============ */
+.contact {
+  background: #1a2332;
+  color: #fff;
+  padding: 8rem 2rem;
+  text-align: center;
+}
+.contact-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.contact-headline {
+  font-family: 'Noto Sans SC', serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.contact-sub {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  opacity: 0.5;
+  margin-bottom: 3rem;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+.contact-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  opacity: 0.7;
+  transition: all 0.3s;
+  position: relative;
+  padding-bottom: 4px;
+}
+.contact-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: #F4D758;
+  transition: width 0.3s;
+}
+.contact-link:hover { opacity: 1; }
+.contact-link:hover::after { width: 100%; }
+
+.contact-quote {
+  font-weight: 300;
+  font-size: 0.9rem;
+  opacity: 0.35;
+  line-height: 1.8;
+}
+
+/* Footer */
+.footer {
+  background: #1a2332;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem;
+  text-align: center;
+}
+.footer p {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+}
+
+/* ============ ANIMATIONS ============ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .project-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .project-card { min-height: 320px; padding: 2rem; }
+  .opinion-text { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+  .work-card { flex: 0 0 280px; }
+  .contact-links { gap: 1.5rem; }
+  .terminal-window { border-radius: 8px; }
+  .terminal-body { padding: 1.2rem 1rem 2rem; font-size: 0.8rem; min-height: 280px; }
+  .terminal-header-title { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ==================== HERO — TERMINAL ==================== -->
+<section class="hero">
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <div class="terminal-dot terminal-dot--red"></div>
+      <div class="terminal-dot terminal-dot--yellow"></div>
+      <div class="terminal-dot terminal-dot--green"></div>
+      <div class="terminal-header-title">bixuan@universe ~ %</div>
+    </div>
+    <div class="terminal-body" id="terminalBody">
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ==================== JOURNEY — CHAT INTERVIEW ==================== -->
+<section class="journey-section" id="aboutSection">
+  <div class="journey-inner">
+    <p class="section-label fade-up">My Journey</p>
+    <h2 class="journey-headline fade-up">从人力资源到AI产品，一条<em>不太直</em>的路</h2>
+
+    <div class="journey-two-screens fade-up">
+      <!-- 第一屏：求学时期 -->
+      <div class="journey-screen">
+        <div class="journey-window">
+          <div class="journey-window-bar">
+            <div class="journey-window-dots">
+              <span style="background:#ff5f57;"></span>
+              <span style="background:#ffbd2e;"></span>
+              <span style="background:#27c93f;"></span>
+            </div>
+            <div class="journey-window-title">采访 · 求学与探索时期</div>
+          </div>
+          <div class="journey-chat-area">
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️  interviewer</div>
+              <div class="jchat-msg">跟大家讲讲你的经历吧？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">好呀，从大学开始说吧 ☺️</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2020-2024 · 湖南工业大学 🎓</div>
+              <div class="jchat-msg">本科读的人力资源管理，GPA专业前3%</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">是的！四年学会了系统思维和把混乱变成秩序 📐 这个能力我现在还在用</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2024-2027 · 合肥工业大学 🏫</div>
+              <div class="jchat-msg">考研到211读公共管理，研究方向是交通健康</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">接触了meta分析和深度学习，开始用Python做数据分析 🐍 这段经历让我发现，我更喜欢用技术解决实际问题</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2024.06-08 · 创业试水 🌸</div>
+              <div class="jchat-msg">听说你做过鲜花项目？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">对！洞察到小镇女生对"高颜值+情绪价值"礼品的需求，做了Jellycat玩偶花束 🧸 暑假2个月GMV超1万元</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">那段经历让我学会了：找到差异化定位、控制成本、多渠道获客 💡</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2024.09-至今 · 考研资料 📚</div>
+              <div class="jchat-msg">还在做考研资料售卖？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">是的！打造个人IP，强调"过来人经验分享"，累计私域500+粉丝，GMV 2w+ 🎯</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二屏：职业探索 -->
+      <div class="journey-screen">
+        <div class="journey-window">
+          <div class="journey-window-bar">
+            <div class="journey-window-dots">
+              <span style="background:#ff5f57;"></span>
+              <span style="background:#ffbd2e;"></span>
+              <span style="background:#27c93f;"></span>
+            </div>
+            <div class="journey-window-title">采访 · 职业探索时期</div>
+          </div>
+          <div class="journey-chat-area">
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2025.09-12 · 科大讯飞 🎙️</div>
+              <div class="jchat-msg">第一段大厂实习，做电商运营/产品运营</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">调研AI智能眼镜市场，搭建FineBI监控看板，数据分析效率提升40% 📊</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">还建立了价格管控机制，累计处理60+低价违规链接 🔍</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2025.12-2026.03 · 睿创微纳 🔬</div>
+              <div class="jchat-msg">参与AI培训系统从0到1设计？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">是的！主导设计"AI技能实战训练"模块，用NLU+RAG+AI智能体实现自动化训练 🤖</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">预期可降低导师工时成本30%以上，还做了闯关式学习路径和积分兑换系统 🎮</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">2026.03-至今 · 九韶智能 💻</div>
+              <div class="jchat-msg">现在在做什么？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">产品实习生，负责API交付看板、Bug管理闭环、版本发布 🚀</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">Bug平均解决周期缩短20%，实现发布过程零人为失误 ✅</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-tag">项目经历 · LuminaAgent 🌟</div>
+              <div class="jchat-msg">还自己做了一个AI平台？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">对！多智能体协同AI平台，融合Multi-Agent、RAG、Tool Calling与MCP协议 💡</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">实现了任务自动分解、知识增强推理、工具链协同执行，支持私有化部署 🔧</div>
+            </div>
+            <div class="jchat jchat--cola">
+              <div class="jchat-name">🎙️ interviewer</div>
+              <div class="jchat-msg">路确实不太直，但每一步都算数 ✨</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">梁碧轩</div>
+              <div class="jchat-msg">是的，每一次转型都是在找同一件事——把混乱变成秩序，然后创造价值 💪</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== OPINIONS ==================== -->
+<section class="opinions-section">
+  <div class="opinion-slide">
+    <div class="opinion-number">01</div>
+    <p class="opinion-text">最好的产品<br>是让用户感受不到产品的存在</p>
+    <span class="opinion-deco">— what I believe</span>
+  </div>
+  <div class="opinion-slide">
+    <div class="opinion-number">02</div>
+    <p class="opinion-text">数据是理性的<br>但产品必须是有温度的</p>
+    <span class="opinion-deco">— what I believe</span>
+  </div>
+  <div class="opinion-slide">
+    <div class="opinion-number">03</div>
+    <p class="opinion-text">从人力资源到AI产品<br>变的是工具，不变的是理解人</p>
+    <span class="opinion-deco">— what I believe</span>
+  </div>
+</section>
+
+<!-- ==================== PROJECTS ==================== -->
+<section class="projects">
+  <div class="projects-inner">
+    <p class="section-label fade-up">What I Do</p>
+    <h2 class="projects-headline fade-up">两件正在做的事</h2>
+    <div class="project-grid">
+      <div class="project-card project-card--1 fade-up" data-tilt>
+        <div class="project-card-bg-text">AI</div>
+        <div class="project-card-content">
+          <div class="project-card-emoji">🤖</div>
+          <h3 class="project-card-title">LuminaAgent 多智能体平台</h3>
+          <p class="project-card-desc">融合Multi-Agent、RAG、Tool Calling与MCP协议的AI平台。支持复杂任务自动分解、知识增强推理与工具链协同执行，企业级私有化部署。</p>
+          <span class="project-card-tag">全栈开发 · Python/FastAPI/Vue3</span>
+        </div>
+      </div>
+      <div class="project-card project-card--2 fade-up fade-up-delay-1" data-tilt>
+        <div class="project-card-bg-text">PM</div>
+        <div class="project-card-content">
+          <div class="project-card-emoji">📊</div>
+          <h3 class="project-card-title">AI驱动的产品设计</h3>
+          <p class="project-card-desc">从0到1设计AI培训系统，主导AI技能实战训练模块。用产品思维解决企业培训痛点，降低导师成本，提升员工实战能力。</p>
+          <span class="project-card-tag">产品设计 · B端系统</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WORKS — HORIZONTAL SCROLL ==================== -->
+<section class="works">
+  <div class="works-top">
+    <p class="section-label fade-up">Collections</p>
+    <h2 class="works-headline fade-up">技能与成果</h2>
+  </div>
+  <div class="works-track">
+    <div class="work-card">
+      <div class="work-card-number">🎨</div>
+      <div class="work-card-unit">产品设计</div>
+      <div class="work-card-title">原型与交互设计</div>
+      <div class="work-card-platform">Axure · Figma · 墨刀 · XMind · ProcessOn</div>
+    </div>
+    <div class="work-card">
+      <div class="work-card-number">📈</div>
+      <div class="work-card-unit">数据分析</div>
+      <div class="work-card-title">数据驱动决策</div>
+      <div class="work-card-platform">SQL · Excel · FineBI · Python · R</div>
+    </div>
+    <div class="work-card">
+      <div class="work-card-number">⚡</div>
+      <div class="work-card-unit">技术协作</div>
+      <div class="work-card-title">全栈理解与落地</div>
+      <div class="work-card-platform">Python · FastAPI · Vue3 · VSCode</div>
+    </div>
+    <div class="work-card">
+      <div class="work-card-number">🏆</div>
+      <div class="work-card-unit">学业成绩</div>
+      <div class="work-card-title">专业排名第一</div>
+      <div class="work-card-platform">GPA 91.95/100 · 考研合工大</div>
+    </div>
+    <div class="work-card">
+      <div class="work-card-number">💰</div>
+      <div class="work-card-unit">创业实践</div>
+      <div class="work-card-title">累计GMV 3w+</div>
+      <div class="work-card-platform">鲜花项目 · 考研资料 · 私域运营</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section class="contact">
+  <div class="contact-inner">
+    <h2 class="contact-headline fade-up">Say Hi</h2>
+    <p class="contact-sub fade-up">I don't bite — but my AI might help you.</p>
+    <div class="contact-links fade-up">
+      <a href="mailto:18315894465@163.com" class="contact-link">📮 邮箱</a>
+    </div>
+    <p class="contact-quote fade-up">"把混乱变成秩序，然后创造价值。"<br>— 这是我一直相信的事</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2026 梁碧轩 · Built with curiosity & code</p>
+</footer>
+
+<script>
+/* ============ TERMINAL TYPEWRITER ============ */
+(function() {
+  const body = document.getElementById('terminalBody');
+
+  const lines = [
+    { type: 'cmd',    text: '$ whoami' },
+    { type: 'output', html: '<span class="output">梁碧轩 (Liang Bixuan)</span>' },
+    { type: 'blank' },
+    { type: 'cmd',    text: '$ cat about.md' },
+    { type: 'output', html: '<span class="output">在AI时代认真做产品的人｜INTJ</span>' },
+    { type: 'output', html: '<span class="output">从人力资源 → 公共管理 → AI产品</span>' },
+    { type: 'output', html: '<span class="output">合工大研二 · 专业排名第一</span>' },
+    { type: 'output', html: '<span class="link">💡 相信数据理性，更相信产品温度</span>' },
+    { type: 'blank' },
+    { type: 'cmd',    text: '$ ls skills/' },
+    { type: 'output', html: '<span class="highlight">product_design/</span>  <span class="highlight">data_analysis/</span>  <span class="highlight">ai_development/</span>' },
+    { type: 'blank' },
+    { type: 'cmd',    text: '$ echo "1 person + AI = infinite possibility"' },
+    { type: 'output', html: '<span class="highlight">✨</span>' },
+  ];
+
+  const lineEls = [];
+  lines.forEach(line => {
+    const div = document.createElement('div');
+    div.className = 'terminal-line';
+    if (line.type === 'blank') {
+      div.innerHTML = '&nbsp;';
+    }
+    lineEls.push({ el: div, data: line });
+    body.appendChild(div);
+  });
+
+  const cursorLine = document.createElement('div');
+  cursorLine.className = 'terminal-line visible';
+  cursorLine.innerHTML = '<span class="terminal-cursor"></span>';
+  cursorLine.style.opacity = '0';
+  body.appendChild(cursorLine);
+
+  let lineIdx = 0;
+
+  function typeNextLine() {
+    if (lineIdx >= lineEls.length) {
+      cursorLine.style.opacity = '1';
+      return;
+    }
+
+    const { el, data } = lineEls[lineIdx];
+    el.classList.add('visible');
+    lineIdx++;
+
+    if (data.type === 'blank') {
+      setTimeout(typeNextLine, 150);
+      return;
+    }
+
+    if (data.type === 'cmd') {
+      typeText(el, data.text, 'cmd', 45, () => {
+        setTimeout(typeNextLine, 300);
+      });
+    } else {
+      const prefix = '<span class="cmd">&gt; </span>';
+      el.innerHTML = prefix;
+      setTimeout(() => {
+        el.innerHTML = prefix + data.html;
+        setTimeout(typeNextLine, 200);
+      }, 120);
+    }
+  }
+
+  function typeText(el, text, className, speed, callback) {
+    const parts = text.match(/^(\$ )(.*)/);
+    let charIdx = 0;
+
+    if (parts) {
+      el.innerHTML = '<span class="cmd">$ </span>';
+      const restText = parts[2];
+      charIdx = 0;
+
+      function typeChar() {
+        if (charIdx < restText.length) {
+          el.innerHTML = '<span class="cmd">$ </span><span class="cmd-text">' + restText.substring(0, charIdx + 1) + '</span>';
+          charIdx++;
+          setTimeout(typeChar, speed + Math.random() * 30);
+        } else {
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    } else {
+      el.textContent = '';
+      function typeChar() {
+        if (charIdx < text.length) {
+          el.textContent += text[charIdx];
+          charIdx++;
+          setTimeout(typeChar, speed);
+        } else {
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    }
+  }
+
+  setTimeout(typeNextLine, 600);
+})();
+
+/* ============ INTERSECTION OBSERVER ============ */
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.fade-up, .tl-item, .opinion-text').forEach(el => {
+    observer.observe(el);
+  });
+})();
+
+/* ============ MOUSE FOLLOW CURSOR GLOW ============ */
+(function() {
+  const glow = document.getElementById('cursorGlow');
+  let mx = 0, my = 0, gx = 0, gy = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+  });
+
+  function animate() {
+    gx += (mx - gx) * 0.08;
+    gy += (my - gy) * 0.08;
+    glow.style.left = gx + 'px';
+    glow.style.top = gy + 'px';
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+/* ============ CARD TILT (MOUSE FOLLOW) ============ */
+(function() {
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateY(0)';
+    });
+  });
+})();
+
+/* ============ PARALLAX ON SCROLL ============ */
+(function() {
+  const terminalWin = document.querySelector('.terminal-window');
+  if (!terminalWin) return;
+
+  window.addEventListener('scroll', () => {
+    const st = window.pageYOffset;
+    if (st < window.innerHeight) {
+      const ratio = st / window.innerHeight;
+      terminalWin.style.transform = `translateY(${st * 0.15}px)`;
+      terminalWin.style.opacity = 1 - ratio * 0.6;
+    }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
